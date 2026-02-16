@@ -5,14 +5,12 @@
     <a href="#description">Description</a> •
     <a href="#technologies">Technologies</a> •
     <a href="#methodologies ">Methodologies</a> •
-    <a href="#status">Status</a> •
     <a href="#license ">License</a> •
   </p>
   <p>•
     <a href="#description">Descrição</a> •
     <a href="#technologies">Tecnologias</a> •
     <a href="#Methodologies ">Metodologia</a> •
-    <a href="#status">Status</a> •
     <a href="#license ">Licença</a> •
   </p>
 </div>
@@ -49,6 +47,7 @@
     <li>CSS3</li>
     <li>JavaScript</li>
     <li>RemixIcon</li>
+    <li>Devicon</li>
     <li>Google Fonts</li>
     <li>ScrollRevealJS</li>
     <li>Git & Github</li>
@@ -63,27 +62,6 @@
     <li>Mobile First</li>
   </ul>
 <div>
-
-<div id="status">
-
-## 📊 Status
-
-### Features
-
-  <ul>
-    <li>[✅] Header</li>
-    <li>[✅] Navigation</li>
-    <li>[✅] Home</li>
-    <li>[✅] About</li>
-    <li>[✅] Projects</li>
-    <li>[✅] Contacts</li>
-    <li>[✅] Footer</li>
-    <li>[✅] Dark Mode</li>
-    <li>[✅] Breakpoint Small devices</li>
-    <li>[✅] Breakpoint Medium devices</li>
-    <li>[✅] Breakpoint Large devices</li>
-  </ul>
-</div>
 
 ## 📜 Licença
 
