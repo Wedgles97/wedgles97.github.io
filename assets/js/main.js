@@ -1,78 +1,76 @@
-/*=========== SHOW MENU ===========*/
-const toggleMenu = () => {
-  const btn = document.getElementById("nav-toggle");
-  const navToggle = document.querySelectorAll("nav .nav__toggle");
-  const links = document.querySelectorAll("nav ul li a");
-  const navMenu = document.querySelector(".nav__menu");
+/*=========== MENU TOGGLE ===========*/
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.querySelector(".nav__menu");
+const navLinks = document.querySelectorAll(".nav__link");
 
-  btn.addEventListener("click", function () {
-    if (this.classList.contains("active")) {
-      this.classList.replace("active", "not-active");
-    } else if (this.classList.contains("not-active")) {
-      this.classList.replace("not-active", "active");
-    } else {
-      this.classList.add("active");
-    }
+if (navToggle) {
+  navToggle.addEventListener("click", () => {
+    navToggle.classList.toggle("active");
+    navToggle.classList.toggle("not-active");
+    if (navMenu) navMenu.classList.toggle("show-menu");
   });
+}
 
-  navToggle.forEach((element) => {
-    element.addEventListener("click", () => {
-      navMenu.classList.toggle("show-menu");
-    });
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    navToggle.classList.remove("active");
+    navToggle.classList.add("not-active");
+    if (navMenu) navMenu.classList.remove("show-menu");
   });
+});
 
-  links.forEach((link) => {
-    link.addEventListener("click", () => {
-      navToggle.forEach((element) => {
-        element.classList.add("not-active");
-        element.classList.remove("active");
-      });
 
-      navMenu.classList.remove("show-menu");
-    });
-  });
-};
-
-toggleMenu();
-
-/*=========== ADD BLUR TO HEADER ===========*/
+/*=========== BLUR HEADER ON SCROLL ===========*/
+const header = document.getElementById("header");
 const blurHeader = () => {
-  const header = document.getElementById("header");
-  const scrollThreshold = 50;
-  header.classList.toggle("blur-header", window.scrollY >= scrollThreshold);
+  if (!header) return;
+  header.classList.toggle("blur-header", window.scrollY >= 50);
 };
 window.addEventListener("scroll", blurHeader);
 
-/*=========== SHOW SCROLL UP ===========*/
-const scrollUp = () => {
-  const scrollUp = document.getElementById("scroll-up");
-  const scrollUpThreshold = 350;
-  scrollUp.classList.toggle("show-scroll", window.scrollY >= scrollUpThreshold);
+
+/*=========== SHOW SCROLL UP BUTTON ===========*/
+const scrollUpBtn = document.getElementById("scroll-up");
+const toggleScrollUp = () => {
+  if (!scrollUpBtn) return;
+  scrollUpBtn.classList.toggle("show-scroll", window.scrollY >= 350);
 };
-window.addEventListener("scroll", scrollUp);
+window.addEventListener("scroll", toggleScrollUp);
 
-/*=========== DARK LIGHT THEME ===========*/
-const themeButton = document.querySelector("#theme-button");
-themeButton.addEventListener("click", () => {
-  document.documentElement.classList.toggle("dark-mode");
-});
 
+/*=========== DARK / LIGHT THEME ===========*/
+const themeButton = document.getElementById("theme-button");
 const darkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
 const updateTheme = () => {
   document.documentElement.classList.toggle(
     "dark-mode",
     darkMediaQuery.matches
   );
 };
+
 updateTheme();
 darkMediaQuery.addEventListener("change", updateTheme);
 
-/* When clicking on any of the buttons in the navigation menu, the title of the button is visible */
-// Função para rolar suavemente para o alvo
+if (themeButton) {
+  themeButton.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark-mode");
+  });
+}
+
+
+/*=========== SMOOTH SCROLL (APENAS ÂNCORAS) ===========*/
 function smoothScrollToTarget(target) {
+  // Ignora href inválidos ou apenas "#"
+  if (!target || target === "#") return;
+
   const targetElement = document.querySelector(target);
-  const navHeight = document.querySelector("nav").offsetHeight;
+  if (!targetElement) return;
+
+  const nav = document.querySelector("nav");
+  const navHeight = nav ? nav.offsetHeight : 0;
   const offset = 20;
+
   const targetPosition =
     targetElement.getBoundingClientRect().top +
     window.scrollY -
@@ -85,28 +83,35 @@ function smoothScrollToTarget(target) {
   });
 }
 
-// Função para iniciar o download do arquivo
-function downloadFile(event) {
-  event.preventDefault();
-  var fileUrl = this.getAttribute("href");
-  var downloadLink = document.createElement("a");
-  downloadLink.href = fileUrl;
-  downloadLink.download = "Wedgles-CV.pdf";
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-}
-
-// Adiciona os event listeners para ambos os casos
+// Intercepta apenas links internos (#)
 document.addEventListener("click", (e) => {
-  const link = e.target.closest(".nav__link, .home__scroll");
-  if (link) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (href && href.startsWith("#") && href !== "#") {
     e.preventDefault();
-    smoothScrollToTarget(link.getAttribute("href"));
+    smoothScrollToTarget(href);
   }
 });
 
-document.getElementById("downloadLink").addEventListener("click", downloadFile);
-document
-  .getElementById("downloadLink")
-  .addEventListener("touchstart", downloadFile);
+
+/*=========== DOWNLOAD CV ===========*/
+const downloadLink = document.getElementById("downloadLink");
+if (downloadLink) {
+  const downloadFile = (event) => {
+    event.preventDefault();
+    const fileUrl = downloadLink.getAttribute("href");
+    if (!fileUrl) return;
+
+    const tempLink = document.createElement("a");
+    tempLink.href = fileUrl;
+    tempLink.download = "Wedgles-CV.pdf";
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+  };
+
+  downloadLink.addEventListener("click", downloadFile);
+  downloadLink.addEventListener("touchstart", downloadFile);
+}
